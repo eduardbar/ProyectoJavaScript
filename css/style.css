@@ -37,7 +37,6 @@
   font-size: 40px;
   font-weight: 900;
 }
-/* Barra  de busqueda */
 .search-header {
   display: flex;
   align-items: center;
@@ -68,7 +67,6 @@
   fill: var(--clr-white);
 }
 
-/* Fin barra busqueda */
 
 .left{
     display: flex;
@@ -331,3 +329,4 @@
     bottom: 20px;
   }
 }
+/* final */
