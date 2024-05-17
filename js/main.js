@@ -111,13 +111,13 @@ function renderAlbums(albums) {
 }
 
 async function reproducirPrimerTrack(albumUri) {
-    const albumId = albumUri.split(":")[2];
-    const url = `${BASE_URL}/albums/?ids=${albumId}`;
+    let albumId = albumUri.split(":")[2];
+    let url = `https://spotify23.p.rapidapi.com/albums/?ids=${albumId}`;
     const options = {
         method: 'GET',
         headers: {
-            'X-RapidAPI-Key': API_KEY,
-            'X-RapidAPI-Host': API_HOST
+            'X-RapidAPI-Key': 'eb7eca7bdfmsh796ea08925fa743p1adfefjsn271c806bbb42',
+            'X-RapidAPI-Host': 'spotify23.p.rapidapi.com'
         }
     };
 
