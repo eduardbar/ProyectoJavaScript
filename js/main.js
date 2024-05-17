@@ -110,3 +110,29 @@ function renderAlbums(albums) {
     });
 }
 
+async function reproducirPrimerTrack(albumUri) {
+    const albumId = albumUri.split(":")[2];
+    const url = `${BASE_URL}/albums/?ids=${albumId}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': API_KEY,
+            'X-RapidAPI-Host': API_HOST
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        const uri = result.albums[0].tracks.items[0]?.uri;
+        const frame = document.querySelector("my-frame");
+        if (uri) {
+            frame.setAttribute("uri", uri);
+        } else {
+            console.warn("No se encontró ninguna pista en el álbum.");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
