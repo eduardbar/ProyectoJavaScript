@@ -111,13 +111,13 @@ function renderAlbums(albums) {
 }
 
 async function reproducirPrimerTrack(albumUri) {
-    let albumId = albumUri.split(":")[2];
-    let url = `https://spotify23.p.rapidapi.com/albums/?ids=${albumId}`;
+    const albumId = albumUri.split(":")[2];
+    const url = `${BASE_URL}/albums/?ids=${albumId}`;
     const options = {
         method: 'GET',
         headers: {
-            'X-RapidAPI-Key': 'eb7eca7bdfmsh796ea08925fa743p1adfefjsn271c806bbb42',
-            'X-RapidAPI-Host': 'spotify23.p.rapidapi.com'
+            'X-RapidAPI-Key': API_KEY,
+            'X-RapidAPI-Host': API_HOST
         }
     };
 
@@ -131,6 +131,52 @@ async function reproducirPrimerTrack(albumUri) {
         } else {
             console.warn("No se encontró ninguna pista en el álbum.");
         }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function mostrarTracks(albumUri) {
+    const albumId = albumUri.split(":")[2];
+    const url = `${BASE_URL}/albums/?ids=${albumId}`;
+    const options = getFetchOptions();
+
+    try {
+        const result = await fetchJson(url, options);
+        const tracks = result.albums[0].tracks.items;
+        renderTracks(tracks, result.albums[0].images[0].url);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+const searchInput2 = document.querySelector('#search-header__input');
+
+document.addEventListener('DOMContentLoaded', () => {
+    buscarTrack(code);
+});
+
+
+searchInput2.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        const query = searchInput2.value.trim();
+        if (query) {
+            const formattedQuery = query.replace(" ", "%20");
+            buscarTrack(formattedQuery);
+        }
+    }
+});
+
+
+
+async function buscarTrack(code) {
+    const url = `${BASE_URL}/search/?q=${code}&type=tracks&offset=0&limit=10&numberOfTopResults=5`;
+    const options = getFetchOptions();
+
+    try {
+        const result = await fetchJson(url, options);
+        const tracks = result.tracks?.items;
+        renderTracks(tracks.map(item => item.data), null);
     } catch (error) {
         console.error(error);
     }
