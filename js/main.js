@@ -182,3 +182,134 @@ async function buscarTrack(code) {
     }
 }
 
+function getFetchOptions() {
+    return {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': API_KEY,
+            'X-RapidAPI-Host': API_HOST
+        }
+    };
+}
+
+async function fetchJson(url, options = getFetchOptions()) {
+    const response = await fetch(url, options);
+    return response.json();
+}
+
+function renderTracks(tracks, albumImage = null) {
+    const listarTrack = document.querySelector('#listarTrack');
+    listarTrack.innerHTML = '';
+
+    tracks.forEach(track => {
+        const image = track.albumOfTrack.coverArt.sources[0]?.url || '';
+        const name = track.name;
+        const artist = track.artists.items[0]?.profile.name || '';
+        const uri = track.uri;
+
+        const div = document.createElement("div");
+        div.classList.add("track_Recomendations");
+        div.innerHTML = `
+            <div class="track_order" data-id="${uri}">
+                <i class='bx bx-play'></i>
+                <div class="imagen_track">
+                    <img src="${image || albumImage}" alt="${name}" class="portada">
+                </div>
+                <div class="info_track">
+                    <h3>${name}</h3>
+                    <p>${artist}</p>
+                </div>
+            </div>
+        `;
+        listarTrack.append(div);
+        div.querySelector('.track_order').addEventListener('click', () => {
+            const frame = document.querySelector("my-frame");
+            frame.setAttribute("uri", uri);
+        });
+    });
+}
+
+
+const urlRecommendations = `https://spotify23.p.rapidapi.com/recommendations/?limit=20&seed_tracks=0c6xIDDpzE81m2q797ordA&seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry`;
+const optionsRecommendations = {
+    method: 'GET',
+    headers: {
+        'X-RapidAPI-Key': 'eb7eca7bdfmsh796ea08925fa743p1adfefjsn271c806bbb42',
+        'X-RapidAPI-Host': 'spotify23.p.rapidapi.com'
+    }
+};
+
+try {
+    const response = await fetch(urlRecommendations, optionsRecommendations);
+    const result = await response.json();
+    const tracks = result.tracks;
+    for (let i = 0; i < 10; i++) {
+        const img = tracks[i]?.album.images[0]?.url;
+        const img2 = tracks[i]?.album.images[i]?.url;
+        const imagen = img ?? img2;
+        const nombre = tracks[i].name;
+        const nombreArtista = tracks[i].artists[0].name;
+        const uri = tracks[i].uri;
+        const div = document.createElement("div");
+        div.classList.add("track_Recomendations");
+        div.innerHTML = `
+                <div class="track_order" data-id="${uri}">
+                    <i class='bx bx-play'></i>
+                    <div class="imagen_track">
+                        <img src="${imagen}" alt="" class="portada">
+                    </div>
+                    <div class="info_track">
+                        <h3>${nombre}</h3>
+                        <p>${nombreArtista}</p>
+                    </div>
+                </div>
+            `;
+        listarPlayList.append(div);
+        div.querySelector('.track_order').addEventListener('click', () => {
+            const frame = document.querySelector("my-frame");
+            frame.setAttribute("uri", uri);
+        });
+    }
+} catch (error) {
+    console.error(error);
+}
+
+const containers = document.querySelectorAll('.container');
+const search = document.querySelectorAll('.search-header__input');
+const leftHeaders = document.querySelectorAll('.left header');
+const mediumHeaders = document.querySelectorAll('.medium header');
+const rightHeaders = document.querySelectorAll('.right header');
+const titles = document.querySelectorAll('.title');
+const contenedores = document.querySelectorAll('.contenedor');
+const trackMusic = document.querySelectorAll('.track_music');
+const albumOrders = document.querySelectorAll('.album_order');
+const trackOrders = document.querySelectorAll('.track_order');
+const iframe = document.querySelectorAll('.iframe');
+const movile = document.querySelectorAll('.menu__mobile');
+
+
+function setStyles(elements, backgroundColor, color) {
+    elements.forEach(function (element) {
+        element.style.background = backgroundColor;
+        element.style.color = color;
+    });
+}
+
+function resetStyles(elements) {
+    elements.forEach(function (element) {
+        element.style.background = '';
+        element.style.color = '';
+    });
+}
+
+function addHoverStyles(elements) {
+    elements.forEach(function (element) {
+        element.classList.add('hover-active');
+    });
+}
+
+function removeHoverStyles(elements) {
+    elements.forEach(function (element) {
+        element.classList.remove('hover-active');
+    });
+}
