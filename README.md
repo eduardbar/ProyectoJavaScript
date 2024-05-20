@@ -37,7 +37,7 @@ This project aims to recreate the Spotify web experience by utilizing the Spotif
 ```
 
 Copy code
-git clone https://github.com/yourusername/spotify-clone.git
+git clone https://github.com/eduardbar/ProyectoJavaScript.git
 ```
 
 1. Navigate to the project directory:
@@ -45,5 +45,5 @@ git clone https://github.com/yourusername/spotify-clone.git
 ```
 
 Copy code
-cd spotify-clone
+cd ProyectoJavaScript
 ```
